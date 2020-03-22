@@ -12,6 +12,7 @@ enum custom_keycodes {
 };
 
 /** LAYERS */
+#define BASE 0
 #define SWE 1
 #define ARROW 2
 #define MOUSE 3
@@ -151,6 +152,47 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______
       ),
 };
+
+void matrix_init_user(void) {
+
+
+  rgblight_enable();
+}
+
+void matrix_scan_user(void) {
+  #ifdef RGBLIGHT_ENABLE
+
+  static uint8_t old_layer = 255;
+  uint8_t new_layer = biton32(layer_state);
+
+  if (old_layer != new_layer) {
+    switch (new_layer) {
+      case BASE:
+        rgblight_setrgb(0x00, 0x00, 0xFF);
+        break;
+      case SWE:
+        rgblight_setrgb(0x00, 0xA0, 0xFF);
+        break;
+      case ARROW:
+        rgblight_setrgb(0xFF, 0x00, 0x00);
+        break;
+      case MOUSE:
+        rgblight_setrgb(0xFF, 0x20, 0x00);
+        break;
+      case RGB:
+        rgblight_setrgb(0xFF, 0x00, 0xFF);
+        break;
+    }
+
+    old_layer = new_layer;
+  }
+
+  #endif //RGBLIGHT_ENABLE
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  return true;
+}
 
 
 	// [SWE] = LAYOUT(
