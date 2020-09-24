@@ -4,8 +4,8 @@
 #define ______ KC_TRNS
 
 /** Custom Keys */
-
 enum custom_keycodes { CK_CUT = LGUI(KC_X), CK_COPY = LGUI(KC_C), CK_PASTE = LGUI(KC_V), CK_UNDO = LGUI(KC_Z), CK_FIND = LGUI(KC_F), CK_LCBR = LSFT(LALT(SE_8)), CK_RCBR = LSFT(LALT(SE_9)), PIPE = SAFE_RANGE, COMPOSE, SKINNY_ARROW, SELECT_APP, SELECT_WORD, CK_DOWN_5, CK_UP_5 };
+
 /** LAYERS */
 #define BASE 0
 #define ARROW 1
