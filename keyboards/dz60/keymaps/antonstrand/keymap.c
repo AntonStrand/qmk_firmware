@@ -4,7 +4,7 @@
 #define ______ KC_TRNS
 
 /** Custom Keys */
-enum custom_keycodes { CK_CUT = LGUI(KC_X), CK_COPY = LGUI(KC_C), CK_PASTE = LGUI(KC_V), CK_UNDO = LGUI(KC_Z), CK_FIND = LGUI(KC_F), CK_LCBR = LSFT(LALT(SE_8)), CK_RCBR = LSFT(LALT(SE_9)), PIPE = SAFE_RANGE, COMPOSE, SKINNY_ARROW, SELECT_APP, SELECT_WORD, CK_DOWN_5, CK_UP_5 };
+enum custom_keycodes { CK_CUT = LGUI(KC_X), CK_COPY = LGUI(KC_C), CK_PASTE = LGUI(KC_V), CK_UNDO = LGUI(KC_Z), CK_FIND = LGUI(KC_F), CK_LCBR = LSFT(LALT(SE_8)), CK_RCBR = LSFT(LALT(SE_9)), PIPE = SAFE_RANGE, COMPOSE, SKINNY_ARROW, SELECT_APP, SELECT_WORD, CK_LEFT_5, CK_DOWN_5, CK_UP_5, CK_RIGHT_5 };
 
 /** LAYERS */
 #define BASE 0
@@ -14,9 +14,17 @@ enum custom_keycodes { CK_CUT = LGUI(KC_X), CK_COPY = LGUI(KC_C), CK_PASTE = LGU
 #define RGB 4
 #define RAPID 5
 
-enum { TD_RCBR = 0, TD_RBRC = 1 };
+enum { TD_RCBR = 0, TD_RBRC = 1, TD_RESET = 2 };
 
-qk_tap_dance_action_t tap_dance_actions[] = {[TD_RCBR] = ACTION_TAP_DANCE_DOUBLE(CK_LCBR, CK_RCBR), [TD_RBRC] = ACTION_TAP_DANCE_DOUBLE(SE_LBRC, SE_RBRC)};
+void safe_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if (state->count >= 3) {
+        // Reset the keyboard if you tap the key more than three times
+        reset_keyboard();
+        reset_tap_dance(state);
+    }
+}
+
+qk_tap_dance_action_t tap_dance_actions[] = {[TD_RCBR] = ACTION_TAP_DANCE_DOUBLE(CK_LCBR, CK_RCBR), [TD_RBRC] = ACTION_TAP_DANCE_DOUBLE(SE_LBRC, SE_RBRC), [TD_RESET] = ACTION_TAP_DANCE_FN(safe_reset)};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -42,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                OSM(MOD_LSFT), ______, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, KC_UP, KC_DEL,
 
-               KC_LCTL, KC_LALT, KC_LGUI, LT(MOUSE, KC_BSPC), KC_LEAD, LT(ARROW, KC_SPC), KC_RALT, TG(RGB), KC_LEFT, KC_DOWN, KC_RIGHT),
+               KC_LCTL, KC_LALT, KC_LGUI, LT(MOUSE, KC_BSPC), KC_LEAD, LT(ARROW, KC_SPC), KC_RALT, MO(RGB), KC_LEFT, KC_DOWN, KC_RIGHT),
 
     /* Arrow Layer
      * ,-----------------------------------------------------------------------------------------.
@@ -96,11 +104,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ,-----------------------------------------------------------------------------------------.
      * | Esc |    |     |  #  |  $   |  %  |     |     |     |     |     |     |     |           |
      * |-----------------------------------------------------------------------------------------+
-     * |       |  "  |  '  |  (|)  | & |  /   |   (   |   )  |      |  -  |  +  |   =  |    ~    |
+     * |       |  "  |  '  |  (|)  | & |  /  |     |  _  | (  |  )  |  -  |  +  |   =  |    ~    |
      * |-----------------------------------------------------------------------------------------+
-     * |         |  @  |  >>  | -> | (|>) |    |    |  [  |   ]  |   {   |   }  |  *  |          |
+     * |         |  @  |  >>  | -> | (|>) |    |    |  <  |  []  |  {}  |  >  |  *  |            |
      * |-----------------------------------------------------------------------------------------+
-     * |           |     |    |    |    |    |    |  (\)  |   <   |   >   |     |   :  |    |    |
+     * |           |     |    |    |    |    |     |    |    |     |     |  (\)  |     |    |    |
      * |-----------------------------------------------------------------------------------------+
      * |      |       |       |                                      |     |     |     |    |    |
      * `-----------------------------------------------------------------------------------------'
@@ -112,31 +120,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                ______, SE_AT, COMPOSE, SKINNY_ARROW, PIPE, ______, ______, KC_GRV, TD(TD_RBRC), TD(TD_RCBR), S(KC_GRV), SE_ASTR, ______,
 
-               ______, ______, ______, ______, ______, SE_BSLS, ______, ______, ______, ______, ______, ______, ______, ______, ______,
+               ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, SE_BSLS, ______, ______, ______,
 
                ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______),
 
     /* RGB Layer
      * ,-----------------------------------------------------------------------------------------.
-     * | RESET |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 |  F7 |  F8 |  F9 | F10 | F11 | F12 |  RESET  |
+     * |     |     |     |     |     |     |     |     |     |     |     |     |     |  RESET 3  |
      * |-----------------------------------------------------------------------------------------+
-     * |        |RBB T|RGB M| Hue+| Hue-| Sat+| Sat-| Val+| Val-|     |     |      |      |      |
+     * |        | F1 |  F2 |  F3  |  F4  |    |     |     |     |     |     |      |      |      |
      * |-----------------------------------------------------------------------------------------+
-     * |         | BL T| BL M| BL+ | BL- |     |     |     |     |     |     |     |             |
+     * |         |  F5 |  F6 |  F7 |  F8 |     |     |     |     |     |     |     |             |
      * |-----------------------------------------------------------------------------------------+
-     * |           |     |     |     |     |     |     |     |     |     |     |     |     |     |
+     * |           |  F9 | F10 | F11 | F12 |     |     |     |     |     |     |     |     |     |
      * |-----------------------------------------------------------------------------------------+
      * |      |       |       |                                   |     |      |     |     |     |
      * `-----------------------------------------------------------------------------------------'
      */
 
-    LAYOUT_all(RESET, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, ______, RESET,
+    LAYOUT_all(______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, TD_RESET,
 
-               ______, RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, ______, ______, ______, ______, ______,
+               ______, KC_F1, KC_F2, KC_F3, KC_F4, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
-               ______, BL_TOGG, BL_STEP, BL_INC, BL_DEC, ______, ______, ______, ______, ______, ______, ______, ______,
+               ______, KC_F5, KC_F6, KC_F7, KC_F8, ______, ______, ______, ______, ______, ______, ______, ______,
 
-               ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
+               ______, KC_F9, KC_F10, KC_F11, KC_F12, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
                ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______),
 
@@ -144,9 +152,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ,-----------------------------------------------------------------------------------------.
      * |     |     |     |     |     |     |     |     |     |     |     |     |     |           |
      * |-----------------------------------------------------------------------------------------+
-     * |       |     |      |      |      |      |      |      |     |     |     |      |        |
+     * |       |     |      |      |      |      |      |     |      |     |     |      |        |
      * |-----------------------------------------------------------------------------------------+
-     * |         |     |     |      |     |    |    |     | Down 5 |  Up 5 |     |    |          |
+     * |         |     |     |      |     |    |    | Left 5 | Down 5 |  Up 5 | Right 5 |    |   |
      * |-----------------------------------------------------------------------------------------+
      * |           |     |     |    |     |    |     |      |     |      |     |     |     |     |
      * |-----------------------------------------------------------------------------------------+
@@ -158,7 +166,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
-               ______, ______, ______, ______, ______, ______, ______, ______, CK_DOWN_5, CK_UP_5, ______, ______, ______,
+               ______, ______, ______, ______, ______, ______, ______, CK_LEFT_5, CK_DOWN_5, CK_UP_5, CK_RIGHT_5, ______, ______,
 
                ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
@@ -173,6 +181,14 @@ void mod_type(uint16_t modcode, uint16_t keycode) {
     register_code16(modcode);
     tap_code16(keycode);
     unregister_code16(modcode);
+}
+
+void mod2_type(uint16_t modcode1, uint16_t modcode2, uint16_t keycode) {
+    register_code16(modcode1);
+    register_code16(modcode2);
+    tap_code16(keycode);
+    unregister_code16(modcode2);
+    unregister_code16(modcode1);
 }
 
 void select_word(void) {
@@ -238,7 +254,6 @@ void matrix_scan_user(void) {
             tap_code(KC_S);
             unregister_code(KC_LGUI);
         }
-        SEQ_FIVE_KEYS(KC_R, KC_E, KC_S, KC_E, KC_T) { tap_code16(RESET); }
 
         leading = false;
         leader_end();
@@ -316,14 +331,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 select_word();
             }
             break;
-        case CK_DOWN_5:
+        case CK_LEFT_5:
             if (record->event.pressed) {
-                repeat_tap(5, KC_DOWN);
+                repeat_tap(5, KC_LEFT);
             }
             break;
         case CK_UP_5:
             if (record->event.pressed) {
                 repeat_tap(5, KC_UP);
+            }
+            break;
+        case CK_RIGHT_5:
+            if (record->event.pressed) {
+                repeat_tap(5, KC_RIGHT);
+            }
+            break;
+        case CK_DOWN_5:
+            if (record->event.pressed) {
+                repeat_tap(5, KC_DOWN);
             }
             break;
     }
