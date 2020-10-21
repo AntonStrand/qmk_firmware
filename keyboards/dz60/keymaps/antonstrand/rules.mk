@@ -21,7 +21,10 @@ RGBLIGHT_ENABLE = yes       # Enable keyboard RGB underglow
 BLUETOOTH_ENABLE = no       # Enable Bluetooth
 AUDIO_ENABLE = no           # Audio output
 
+<<<<<<< HEAD
 LEADER_ENABLE = yes
 TAP_DANCE_ENABLE = yes
 
+=======
+>>>>>>> master
 LAYOUTS = 60_ansi 60_ansi_arrow 60_ansi_split_bs_rshift 60_hhkb 60_iso 60_abnt2 60_tsangan_hhkb
