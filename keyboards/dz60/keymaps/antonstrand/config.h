@@ -2,15 +2,17 @@
 
 #include "config_common.h"
 
-/* Leader timeout in milliseconds */
-#define LEADER_TIMEOUT 450
-#define LEADER_PER_KEY_TIMING 400
-
 #define ONESHOT_TAP_TOGGLE 5 /* Tapping this number of times holds the key until tapped once again. */
 #define ONESHOT_TIMEOUT 5000 /* Time (in ms) before the one shot key is released */
 
 // #    define TAPPING_TERM 100
 #define PERMISSION_HOLD
+
+// Prevent normal rollover on alphas from accidentally triggering mods.
+#define IGNORE_MOD_TAP_INTERRUPT
+
+// Enable rapid switch from tap to hold, disables double tap hold auto-repeat.
+#define TAPPING_FORCE_HOLD
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID 0x445A  // "DZ"
