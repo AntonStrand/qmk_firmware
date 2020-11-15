@@ -26,7 +26,6 @@ enum custom_keycodes {
   CK_FIND = LGUI(KC_F),
   CK_LCBR = LSFT(LALT(SE_8)),
   CK_RCBR = LSFT(LALT(SE_9)),
-  CK_AA = LALT(KC_A),
   PIPE = SAFE_RANGE,
   COMPOSE,
   SKINNY_ARROW,
@@ -56,12 +55,15 @@ enum layers {
 #define LALT_D MT(MOD_LALT, KC_D)
 #define LGUI_F MT(MOD_LGUI, KC_F)
 
+#define NUM_ESC LT(_NUMBER, KC_ESC)
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Qwerty
     * ,-----------------------------------------------------------------------------------.
     * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |   Å  |
     * |------+------+------+------+------+------+------+------+------+------+------+------|
-    * | Esc  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   Ö  |   Ä  |
+    * |NumEsc|   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   Ö  |   Ä  |
     * |------+------+------+------+------+------+------+------+------+------+------+------|
     * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   -  |Enter |
     * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -69,8 +71,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * `-----------------------------------------------------------------------------------'
     */
     [_SWE] = LAYOUT_planck_mit(
-        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
-        KC_ESC,  LCTL_A,  LSFT_S,  LALT_D,  LGUI_F,  KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    SE_ODIA, SE_ADIA,
+        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    SE_ARNG,
+        NUM_ESC, LCTL_A,  LSFT_S,  LALT_D,  LGUI_F,  KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    SE_ODIA, SE_ADIA,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_MINS, KC_ENT ,
         RGB_TOG, KC_LCTL, KC_LALT, KC_LGUI, LOWER,       KC_SPC,       RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
     ),
@@ -89,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
         KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,
-        RGB_TOG, KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        RGB_TOG, KC_LCTL, KC_LALT, KC_LGUI, LOWER,       KC_SPC,       RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
     ),
 
     /* Lower
@@ -159,14 +161,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * `-----------------------------------------------------------------------------------'
     */
     [_NUMBER] = LAYOUT_planck_mit(
-      _______, KC_F1,  KC_F2,  KC_F3,  KC_F4, _______, _______, _______, KC_1, KC_2, KC_3,    KC_BSPC,
-      _______, KC_F5,  KC_F6,  KC_F7,  KC_F8, _______, _______, _______, KC_4, KC_5, KC_6,     KC_DEL,
-      _______, KC_F9, KC_F10, KC_F11, KC_F12, _______, _______, _______, KC_7, KC_8, KC_9,    _______,
-      _______, _______, _______, _______, _______, _______, _______, _______,  KC_0, _______, _______)
+      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,      SE_LPRN,   SE_RPRN, SE_PLUS,    KC_1, KC_2, KC_3,    KC_BSPC,
+      _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,      S(SE_4),   A(SE_4), SE_MINS,    KC_4, KC_5, KC_6,    KC_DEL ,
+      _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  TG(_NUMBER),  SE_PERC, SE_SLSH,    KC_7, KC_8, KC_9,    _______,
+      _______, _______, _______, _______, _______,          _______,      SE_ASTR,  KC_DOT, KC_0, KC_COMM, SE_EQL)
 
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
-
