@@ -45,11 +45,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS,
 
-               OSL(SYMBOL), MT(MOD_LSFT, KC_A), MT(MOD_LCTL, KC_S), MT(MOD_LALT, KC_D), MT(MOD_LGUI, KC_F), KC_G, KC_H, MT(MOD_LGUI, KC_J), KC_K, KC_L, SE_ODIA, SE_ADIA, KC_ENT,
+               OSL(SYMBOL), MT(MOD_LCTL, KC_A), MT(MOD_LSFT, KC_S), MT(MOD_LALT, KC_D), MT(MOD_LGUI, KC_F), KC_G, KC_H, MT(MOD_LGUI, KC_J), KC_K, KC_L, SE_ODIA, SE_ADIA, KC_ENT,
 
                OSM(MOD_LSFT), ______, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, KC_UP, KC_DEL,
 
-               KC_LCTL, KC_LALT, KC_LGUI, LT(MOUSE, KC_BSPC), KC_LSFT, LT(ARROW, KC_SPC), KC_RALT, MO(RGB), KC_LEFT, KC_DOWN, KC_RIGHT),
+               KC_LCTL, KC_LALT, KC_LGUI, LT(SYMBOL, KC_BSPC), KC_LSFT, LT(ARROW, KC_SPC), KC_RALT, MO(RGB), KC_LEFT, KC_DOWN, KC_RIGHT),
 
     /* Arrow Layer
      * ,-----------------------------------------------------------------------------------------.
@@ -69,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                ______, ______, SELECT_WORD, KC_ENT, KC_DEL, CK_FIND, ______, CK_UNDO, CK_CUT, CK_COPY, CK_PASTE, ______, ______, ______,
 
-               ______, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI, SELECT_APP, ______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, ______, ______,
+               ______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, SELECT_APP, ______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, ______, ______,
 
                ______, ______, CK_UNDO, CK_CUT, CK_COPY, MO(RAPID), NEXT_APP_WIN, KC_ESC, KC_ENT, ______, ______, ______, ______, KC_VOLU, KC_MUTE,
 
@@ -135,15 +135,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * `-----------------------------------------------------------------------------------------'
      */
 
-    LAYOUT_all(______, ______, ______, SE_HASH, A(SE_4), SE_PERC, ______, ______, ______, ______, ______, ______, ______, ______, ______,
+    /* Lower (Nav)
+     * ,-----------------------------------------------------------------------------------.
+     * |   ~  |   "  |   '  |   |  |   &  |   ´  |   $  |   {  |   (  |  )   |  }   |   ^  |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * |   §  |   @  |  >>  |  ->  |  |>  |  =>  |   #  |   [  |   ]  |   ;  |   :  |   `  |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | Shift|   +  |   -  |   *  |  /   |  =   |   %  |   \  |   <  |   >  |   _  |   '  |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | Num  | Ctrl | Alt  | GUI  |      |     Tab     |Adjust|  GUI |  Alt | Ctrl |   !  |
+     * `-----------------------------------------------------------------------------------'
+     */
 
-               ______, SE_DQUO, SE_QUOT, A(KC_7), SE_AMPR, SE_SLSH, ______, S(SE_MINS), SE_LPRN, SE_RPRN, SE_MINS, SE_PLUS, SE_EQL, SE_TILD,
+    LAYOUT_all(______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
-               ______, SE_AT, COMPOSE, SKINNY_ARROW, PIPE, ______, ______, KC_GRV, TD(TD_RBRC), TD(TD_RCBR), S(KC_GRV), SE_ASTR, ______,
+               ______, SE_DQUO, SE_QUOT, A(KC_7), SE_AMPR, KC_EQL, A(SE_4), CK_LCBR, SE_LPRN, SE_RPRN, CK_RCBR, KC_RCBR, ______, SE_TILD,
 
-               ______, ______, ______, ______, ______, FAT_ARROW, ______, ______, ______, ______, ______, SE_BSLS, ______, ______, ______,
+               ______, SE_AT, COMPOSE, SKINNY_ARROW, PIPE, FAT_ARROW, SE_HASH, SE_LBRC, SE_RBRC, S(KC_COMM), S(KC_DOT), S(KC_EQL), ______,
+
+               ______, ______, SE_PLUS, SE_MINS, SE_ASTR, SE_SLSH, SE_EQL, SE_PERC, A(S(SE_7)), KC_GRV, S(KC_GRV), S(SE_MINS), SE_QUOT, ______, ______,
 
                ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______),
+
+    // LAYOUT_all(______, ______, ______, SE_HASH, A(SE_4), SE_PERC, ______, ______, ______, ______, ______, ______, ______, ______, ______,
+
+    //            ______, SE_DQUO, SE_QUOT, A(KC_7), SE_AMPR, SE_SLSH, ______, S(SE_MINS), SE_LPRN, SE_RPRN, SE_MINS, SE_PLUS, SE_EQL, SE_TILD,
+
+    //            ______, SE_AT, COMPOSE, SKINNY_ARROW, PIPE, ______, ______, KC_GRV, TD(TD_RBRC), TD(TD_RCBR), S(KC_GRV), SE_ASTR, ______,
+
+    //            ______, ______, ______, ______, ______, FAT_ARROW, ______, ______, ______, ______, ______, SE_BSLS, ______, ______, ______,
+
+    //            ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______),
 
     /* Game Layer
      * ,-----------------------------------------------------------------------------------------.
