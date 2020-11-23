@@ -1,4 +1,4 @@
-/* Copyright 2020 tominabox1
+/* Copyright 2020 Anton Strand base on tominabox1's default layout
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +16,8 @@
 #include QMK_KEYBOARD_H
 #include "quantum.h"
 #include "version.h"
-#include "keymap_swedish.h"
-
-enum custom_keycodes {
-  CK_CUT = LGUI(KC_X),
-  CK_COPY = LGUI(KC_C),
-  CK_PASTE = LGUI(KC_V),
-  CK_UNDO = LGUI(KC_Z),
-  CK_FIND = LGUI(KC_F),
-  CK_LCBR = LSFT(LALT(SE_8)),
-  CK_RCBR = LSFT(LALT(SE_9)),
-  PIPE = SAFE_RANGE,
-  COMPOSE,
-  SKINNY_ARROW,
-  SELECT_APP,
-  SELECT_WORD,
-  CK_LEFT_5,
-  CK_DOWN_5,
-  CK_UP_5,
-  CK_RIGHT_5
-  };
-
+#include "keymap_swedish_mac.h"
+#include "custom_keycodes.h"
 
 enum layers {
   _SWE,
@@ -47,15 +28,11 @@ enum layers {
   _NUMBER
 };
 
-#define LOWER MO(_LOWER)
-#define RAISE MO(_RAISE)
-
-#define LCTL_A MT(MOD_LCTL, KC_A)
-#define LSFT_S MT(MOD_LSFT, KC_S)
-#define LALT_D MT(MOD_LALT, KC_D)
-#define LGUI_F MT(MOD_LGUI, KC_F)
+#define LWR_BSP LT(_LOWER, KC_BSPC)
+#define RSE_ENT LT(_RAISE, KC_ENT)
 
 #define NUM_ESC LT(_NUMBER, KC_ESC)
+#define TG_NUM TG(_NUMBER)
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -65,16 +42,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |------+------+------+------+------+------+------+------+------+------+------+------|
      * | Esc  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   Ö  |   Ä  |
      * |------+------+------+------+------+------+------+------+------+------+------+------|
-     * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   -  |Shft/'|
+     * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   -  |Shft '|
      * |------+------+------+------+------+------+------+------+------+------+------+------|
-     * | Num  | Ctrl | Alt  | GUI  |BK/LWR|    Space    |Ent/RS|  GUI |  Alt | Ctrl | FN/? |
+     * | Num  | Ctrl | Alt  | GUI  |BK/LWR|    Space    |Ent/RS|  GUI |  Alt | Ctrl | FN ? |
      * `-----------------------------------------------------------------------------------'
      */
     [_SWE] = LAYOUT_planck_mit(
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    SE_ARNG,
         NUM_ESC, LCTL_A,  LSFT_S,  LALT_D,  LGUI_F,  KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    SE_ODIA, SE_ADIA,
-        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_MINS, KC_ENT ,
-        RGB_TOG, KC_LCTL, KC_LALT, KC_LGUI, LOWER,       KC_SPC,       RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_MINS, KC_ENT,
+        RGB_TOG, KC_LCTL, KC_LALT, KC_LGUI, LWR_BSP,     KC_SPC,       RSE_ENT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
     ),
     /* Qwerty
     * ,-----------------------------------------------------------------------------------.
@@ -91,36 +68,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
         KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,
-        RGB_TOG, KC_LCTL, KC_LALT, KC_LGUI, LOWER,       KC_SPC,       RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        RGB_TOG, KC_LCTL, KC_LALT, KC_LGUI, LWR_BSP,     KC_SPC,       RSE_ENT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
     ),
 
     /* Lower (Nav)
      * ,-----------------------------------------------------------------------------------.
      * |   ~  |   "  |   '  |   |  |   &  |   ´  |   $  |   {  |   (  |  )   |  }   |   ^  |
      * |------+------+------+------+------+------+------+------+------+------+------+------|
-     * |   §  |   @  |  >>  |  ->  |  |>  |  =>  |   #  |   [  |   ]  |   ;  |   :  |   `  |
+     * | Del  |   @  |  >>  |  ->  |  |>  |  =>  |   #  |   [  |   ]  |   ;  |   :  |   `  |
      * |------+------+------+------+------+------+------+------+------+------+------+------|
-     * | Shift|   +  |   -  |   *  |  /   |  =   |   ~  |   \  |   <  |   >  |   _  |   '  |
+     * | Shift|   +  |   -  |   *  |  /   |  =   |   %  |   \  |   <  |   >  |   _  |   '  |
      * |------+------+------+------+------+------+------+------+------+------+------+------|
      * | Num  | Ctrl | Alt  | GUI  |      |     Tab     |Adjust|  GUI |  Alt | Ctrl |   !  |
      * `-----------------------------------------------------------------------------------'
      */
-    /* Lower
-    * ,-----------------------------------------------------------------------------------.
-    * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Bksp |
-    * |------+------+------+------+------+------+------+------+------+------+------+------|
-    * | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |   _  |   +  |   {  |   }  |  |   |
-    * |------+------+------+------+------+------+------+------+------+------+------+------|
-    * |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO ~ |ISO | | Home | End  |      |
-    * |------+------+------+------+------+------+------+------+------+------+------+------|
-    * |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
-    * `-----------------------------------------------------------------------------------'
-    */
+
     [_LOWER] = LAYOUT_planck_mit(
-        KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, KC_BSPC,
-        KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_UNDS,    KC_PLUS,    KC_LCBR, KC_RCBR, KC_PIPE,
-        _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  S(KC_NUHS), S(KC_NUBS), KC_HOME, KC_END,  _______,
-        _______, _______, _______, _______, _______, _______, _______,    KC_MNXT,    KC_VOLD, KC_VOLU, KC_MPLY
+          SE_TILD, SE_DQUO, SE_QUOT, SE_PIPE,      SE_AMPR, KC_EQL,    SE_DLR,  SE_LCBR, SE_LPRN, SE_RPRN, SE_RCBR, SE_CIRC,
+          KC_DEL,  SE_AT,   COMPOSE, SKINNY_ARROW, PIPE,    FAT_ARROW, SE_HASH, SE_LBRC, SE_RBRC, SE_SCLN, SE_COLN, SE_GRV,
+          KC_LSFT, SE_PLUS, SE_MINS, SE_ASTR,      SE_SLSH, SE_EQL,    SE_PERC, SE_BSLS, SE_LABK, SE_RABK, SE_UNDS, SE_QUOT,
+          ______,  ______,  ______,  ______,       ______,        ______,       ______,  ______,  ______,  ______,  KC_EXLM
     ),
 
     /* Raise (Nav)
@@ -169,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______
-    )
+    ),
 
     /* Number
     * ,-----------------------------------------------------------------------------------.
@@ -183,10 +150,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * `-----------------------------------------------------------------------------------'
     */
     [_NUMBER] = LAYOUT_planck_mit(
-      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,       SE_LPRN,  SE_RPRN, SE_PLUS,    KC_1, KC_2, KC_3,    KC_BSPC,
-      _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,       S(SE_4),  A(SE_4), SE_MINS,    KC_4, KC_5, KC_6,    KC_DEL,
-      _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  TG(_NUMBER),  SE_PERC, SE_SLSH,    KC_7, KC_8, KC_9,    KC_ENT,
-      _______, _______, _______, _______, _______,          _______,      SE_ASTR,  KC_DOT, KC_0, KC_COMM, SE_EQL)
+      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   SE_LPRN,  SE_RPRN, SE_PLUS,    KC_1, KC_2, KC_3,    KC_BSPC,
+      _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   SE_EURO,  SE_DLR,  SE_MINS,    KC_4, KC_5, KC_6,    KC_DEL,
+      _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  TG_NUM,   SE_PERC, SE_SLSH,    KC_7, KC_8, KC_9,    KC_ENT,
+      _______, _______, _______, _______, _______,      _______,      SE_ASTR,  KC_DOT, KC_0, KC_COMM, SE_EQL
+    )
 
 };
 
