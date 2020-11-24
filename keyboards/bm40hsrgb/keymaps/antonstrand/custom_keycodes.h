@@ -8,7 +8,7 @@ enum custom_keycodes {
   COMPOSE,
   SKINNY_ARROW,
   FAT_ARROW,
-  SELECT_APP,
+  APP,
   CK_RAPID_LEFT,
   CK_RAPID_DOWN,
   CK_RAPID_UP,
