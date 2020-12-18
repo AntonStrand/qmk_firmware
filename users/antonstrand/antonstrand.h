@@ -6,6 +6,7 @@
 #include "action.h"
 #include "version.h"
 #include "combos_config.h"
+#include "tap_dance.h"
 
 enum layers {
     _QWERTY,
@@ -37,6 +38,8 @@ enum layers {
 #define SFT_QUOT RSFT_T(SE_QUOT)
 #define SLEEP G(A(KC_EJCT))
 #define TG_CMT G(SE_SLSH)
+
+#define TD_RAISE TD(RS_SPC_ENT)
 
 // Define all of
 enum custom_keycodes {

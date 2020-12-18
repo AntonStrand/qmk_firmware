@@ -40,10 +40,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * `-----------------------------------------------------------------------------------'
      */
     [_QWERTY] = LAYOUT_planck_mit(
-        KC_TAB,      KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    SE_ARNG,
-        GUI_ESC,     LCTL_A,  LSFT_S,  LALT_D,  LGUI_F,  KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    SE_ODIA, SE_ADIA,
-        KC_LSFT,     KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  SE_MINS, SFT_QUOT,
-        MO(_NUMBER), KC_LCTL, KC_LALT, KC_LGUI, LWR_BSP,     KC_SPC,       RSE_SPC, KC_ENT,  KC_RALT, KC_RCTL, GUI_QM
+        KC_TAB,      KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,  KC_I,    KC_O,    KC_P,    SE_ARNG,
+        GUI_ESC,     LCTL_A,  LSFT_S,  LALT_D,  LGUI_F,  KC_G,    KC_H,    KC_J,  KC_K,    KC_L,    SE_ODIA, SE_ADIA,
+        KC_LSFT,     KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,  KC_COMM, KC_DOT,  SE_MINS, SFT_QUOT,
+        MO(_NUMBER), KC_LCTL, KC_LALT, KC_LGUI, LWR_BSP,     KC_SPC,       TD_RAISE, KC_ENT,  KC_RALT, KC_RCTL, GUI_QM
     ),
 
     /* Lower (Nav)

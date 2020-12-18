@@ -8,6 +8,7 @@ BOOTLOADER = atmel-dfu
 #   change yes to no to disable
 #
 COMBO_ENABLE = yes
+TAP_DANCE_ENABLE = yes
 BOOTMAGIC_ENABLE = lite     # Virtual DIP switch configuration
 MOUSEKEY_ENABLE = no       # Mouse keys
 EXTRAKEY_ENABLE = yes       # Audio control and System control
