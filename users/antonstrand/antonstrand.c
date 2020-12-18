@@ -2,10 +2,9 @@
 #include "keymap_swedish_mac.h"
 #include "sendstring_swedish_mac.h"
 #include "config.h"
+#include "space_cadet.c"
 
 static uint16_t pressed_key = NO_KEY_PRESS;
-
-static uint16_t space_cadet_timer[1] = {0};
 
 void set_pressed_key(uint16_t key, bool is_pressed) {
     if (is_pressed) {
@@ -128,15 +127,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         case GUI_QM:
-            if (record->event.pressed) {
-                space_cadet_timer[0] = timer_read();
-                register_code16(KC_LGUI);
-            } else {
-                unregister_code16(KC_LGUI);
-                if (timer_elapsed(space_cadet_timer[0]) < TAPPING_TERM) {
-                    tap_code16(SE_QUES);
-                }
-            }
+            gui_qm(record->event.pressed);
             break;
     }
 
