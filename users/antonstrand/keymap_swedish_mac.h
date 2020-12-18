@@ -76,7 +76,7 @@
 #define SE_ADIA KC_QUOT // Ä
 #define SE_QUOT KC_NUHS // '
 // Row 4
-#define SE_LABK KC_NUBS // <
+#define SE_LABK KC_GRV  // <
 #define SE_Z    KC_Z    // Z
 #define SE_X    KC_X    // X
 #define SE_C    KC_C    // C
