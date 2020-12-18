@@ -3,10 +3,11 @@
 #include "version.h"
 #include "keymap_swedish.h"
 #include "sendstring_swedish.h"
+#include "antonstrand.h"
 #define ______ KC_TRNS
 
 /** Custom Keys */
-enum custom_keycodes { NEXT_APP_WIN = LGUI(LSFT(KC_EQL)), CK_CUT = LGUI(KC_X), CK_COPY = LGUI(KC_C), CK_PASTE = LGUI(KC_V), CK_UNDO = LGUI(KC_Z), CK_FIND = LGUI(KC_F), CK_LCBR = LSFT(LALT(SE_8)), CK_RCBR = LSFT(LALT(SE_9)), PIPE = SAFE_RANGE, COMPOSE, SKINNY_ARROW, FAT_ARROW, SELECT_APP, SELECT_WORD, CK_RAPID_LEFT, CK_RAPID_DOWN, CK_RAPID_UP, CK_RAPID_RIGHT, SEND_VERSION, SEND_MAKE };
+enum custom_keycodes_keymap { NEXT_APP_WIN = LGUI(LSFT(KC_EQL)), CK_CUT = LGUI(KC_X), CK_COPY = LGUI(KC_C), CK_PASTE = LGUI(KC_V), CK_UNDO = LGUI(KC_Z), CK_FIND = LGUI(KC_F), CK_LCBR = LSFT(LALT(SE_8)), CK_RCBR = LSFT(LALT(SE_9)), SELECT_WORD = NEW_SAFE_RANGE, SEND_VERSION, SEND_MAKE };
 
 /** LAYERS */
 #define BASE 0
@@ -17,9 +18,9 @@ enum custom_keycodes { NEXT_APP_WIN = LGUI(LSFT(KC_EQL)), CK_CUT = LGUI(KC_X), C
 #define GAME 5
 #define RGB 6
 
-#define NO_KEY_PRESS (UINT16_MAX - 1)
+// #define NO_KEY_PRESS (UINT16_MAX - 1)
 
-static uint16_t pressed_key = NO_KEY_PRESS;
+// static uint16_t pressed_key = NO_KEY_PRESS;
 
 enum { TD_RCBR = 0, TD_RBRC = 1 };
 
@@ -69,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                ______, ______, SELECT_WORD, KC_ENT, KC_DEL, CK_FIND, ______, CK_UNDO, CK_CUT, CK_COPY, CK_PASTE, ______, ______, ______,
 
-               ______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, SELECT_APP, ______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, ______, ______,
+               ______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, APP, ______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, ______, ______,
 
                ______, ______, CK_UNDO, CK_CUT, CK_COPY, MO(RAPID), NEXT_APP_WIN, KC_ESC, KC_ENT, ______, ______, ______, ______, KC_VOLU, KC_MUTE,
 
@@ -93,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
-               ______, ______, ______, ______, ______, ______, ______, CK_RAPID_LEFT, CK_RAPID_DOWN, CK_RAPID_UP, CK_RAPID_RIGHT, ______, ______,
+               ______, ______, ______, ______, ______, ______, ______, R_LEFT, R_DOWN, R_UP, R_RIGHT, ______, ______,
 
                ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
@@ -207,7 +208,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     LAYOUT_all(______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
-               ______, KC_F1, KC_F2, KC_F3, KC_F4, ______, ______, ______, ______, ______, ______, SEND_VERSION, SEND_MAKE, ______,
+               ______, KC_F1, KC_F2, KC_F3, KC_F4, ______, ______, ______, ______, ______, ______, SEND_VERSION, CK_FLASH, ______,
 
                ______, KC_F5, KC_F6, KC_F7, KC_F8, ______, ______, ______, ______, ______, ______, ______, KC_SLEP,
 
@@ -217,7 +218,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-void matrix_init_user(void) { rgblight_enable(); }
+void matrix_init_user(void) {
+    rgblight_enable();
+    combo_enable();
+}
 
 void mod_type(uint16_t modcode, uint16_t keycode) {
     register_code16(modcode);
@@ -242,30 +246,31 @@ void repeat_tap(uint16_t times, uint16_t keycode) {
     }
 }
 
-void set_pressed_key(uint16_t key, bool is_pressed) {
-    if (is_pressed) {
-        pressed_key = key;
-    } else {
-        pressed_key = NO_KEY_PRESS;
-    }
-}
+// void set_pressed_key(uint16_t key, bool is_pressed) {
+//     if (is_pressed) {
+//         pressed_key = key;
+//     } else {
+//         pressed_key = NO_KEY_PRESS;
+//     }
+// }
 
 void matrix_scan_user(void) {
     // Repeat key presses while hold down
-    switch (pressed_key) {
-        case CK_RAPID_LEFT:
-            tap_code16(KC_LEFT);
-            break;
-        case CK_RAPID_UP:
-            tap_code16(KC_UP);
-            break;
-        case CK_RAPID_RIGHT:
-            tap_code16(KC_RIGHT);
-            break;
-        case CK_RAPID_DOWN:
-            tap_code16(KC_DOWN);
-            break;
-    }
+    handle_pressed_key();
+    // switch (pressed_key) {
+    //     case R_LEFT:
+    //         tap_code16(KC_LEFT);
+    //         break;
+    //     case CK_RAPID_UP:
+    //         tap_code16(KC_UP);
+    //         break;
+    //     case CK_RAPID_RIGHT:
+    //         tap_code16(KC_RIGHT);
+    //         break;
+    //     case CK_RD:
+    //         tap_code16(KC_DOWN);
+    //         break;
+    // }
 
 #ifdef RGBLIGHT_ENABLE
     static uint8_t old_layer = 255;
@@ -327,7 +332,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code16(S(KC_GRV));
             }
             break;
-        case SELECT_APP:
+        case APP:
             if (record->event.pressed) {
                 register_code16(KC_LCMD);
                 tap_code16(KC_TAB);
@@ -340,8 +345,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 select_word();
             }
             break;
-        case CK_RAPID_LEFT:
-            set_pressed_key(CK_RAPID_LEFT, record->event.pressed);
+        case R_LEFT:
+            set_pressed_key(R_LEFT, record->event.pressed);
             break;
         case CK_RAPID_UP:
             set_pressed_key(CK_RAPID_UP, record->event.pressed);
@@ -349,17 +354,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case CK_RAPID_RIGHT:
             set_pressed_key(CK_RAPID_RIGHT, record->event.pressed);
             break;
-        case CK_RAPID_DOWN:
-            set_pressed_key(CK_RAPID_DOWN, record->event.pressed);
+        case CK_RD:
+            set_pressed_key(CK_RD, record->event.pressed);
             break;
         case SEND_VERSION:
             if (record->event.pressed) {
                 SEND_STRING(QMK_KEYBOARD "/" QMK_KEYMAP "@" QMK_VERSION " (" QMK_BUILDDATE ")");
             }
             break;
-        case SEND_MAKE:
+        case CK_FLASH:
             if (record->event.pressed) {
-                SEND_STRING("qmk flash -kb " QMK_KEYBOARD " -km " QMK_KEYMAP SS_TAP(X_ENTER));
+                flash_keyboard();
             }
             break;
     }
