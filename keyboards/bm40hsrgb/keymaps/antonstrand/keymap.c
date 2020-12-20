@@ -18,6 +18,7 @@
 #include "version.h"
 #include "antonstrand.h"
 #include "keymap_swedish_mac.h"
+#include "rgblight_list.h"
 
 
 #define LWR_BSP LT(_LOWER, KC_BSPC)
@@ -43,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,      KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,  KC_I,    KC_O,    KC_P,    SE_ARNG,
         GUI_ESC,     LCTL_A,  LSFT_S,  LALT_D,  LGUI_F,  KC_G,    KC_H,    KC_J,  KC_K,    KC_L,    SE_ODIA, SE_ADIA,
         KC_LSFT,     KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,  KC_COMM, KC_DOT,  SE_MINS, SFT_QUOT,
-        MO(_NUMBER), KC_LCTL, KC_LALT, KC_LGUI, LWR_BSP,     KC_SPC,       TD_RAISE, KC_ENT,  KC_RALT, KC_RCTL, GUI_QM
+        MO(_NUMBER), KC_LCTL, KC_LALT, KC_LGUI, LWR_BSP,     KC_SPC,    TD_RAISE, KC_ENT,  KC_RALT, KC_DEL, GUI_QM
     ),
 
     /* Lower (Nav)
@@ -77,8 +78,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //  * `-----------------------------------------------------------------------------------'
     //  */
     [_RAISE] = LAYOUT_planck_mit(
-        S(KC_TAB), _______, _______, _______, _______,    _______, CK_REDO, CK_UNDO, CK_CUT,  CK_COPY, CK_PASTE, KC_BSPC,
-        KC_DEL,    KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,    APP,      TG_CMT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  KC_BSLS,
+        S(KC_TAB), DM_REC2, DM_PLY2, DM_PLY1, DM_REC1,    _______, CK_REDO, CK_UNDO, CK_CUT,  CK_COPY, CK_PASTE, KC_BSPC,
+        _______,   KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,    APP,      TG_CMT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  KC_BSLS,
         _______,   _______, _______, _______, MO(_RAPID), _______, _______, KC_ENT,  _______, _______, _______,  KC_ENT,
         _______,   _______, _______, _______, _______,         _______,     _______, _______, _______, _______,  _______
     ),
@@ -180,25 +181,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-    #ifdef RGBLIGHT_ENABLE
-        switch (get_highest_layer(state)) {
+void rgb_matrix_indicators_user (void) {
+    switch (get_highest_layer(layer_state)) {
         case _RAISE:
-            rgblight_setrgb (0x00,  0x00, 0xFF);
+            set_color(19, 22, RGB_TEAL);
+            rgb_matrix_set_color(42, RGB_TEAL);
             break;
         case _LOWER:
-            rgblight_setrgb (0xFF,  0x00, 0x00);
+            rgb_matrix_set_color(40, 0xFF,  0x00, 0x00);
             break;
         case _NUMBER:
-            rgblight_setrgb (0x00,  0xFF, 0x00);
+            set_color(7, 9, RGB_AZURE);
+            set_color(19, 21, RGB_AZURE);
+            set_color(31, 33, RGB_AZURE);
+            rgb_matrix_set_color(43, RGB_AZURE);
+            rgb_matrix_set_color (36  , 0x00,  0xFF, 0x00);
             break;
         case _ADJUST:
-            rgblight_setrgb (0x7A,  0x00, 0xFF);
-            break;
-        default: //  for any other layers, or the default layer
-            rgblight_setrgb (0x00,  0xFF, 0xFF);
+            rgb_matrix_set_color_all (0x7A,  0x00, 0xFF);
             break;
     }
-    #endif
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }

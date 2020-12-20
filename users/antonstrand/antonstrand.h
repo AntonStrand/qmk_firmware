@@ -60,7 +60,7 @@ enum custom_keycodes {
     GUI_QM,
     KEYMAP_RANGE  // use "KEYMAP_RANGE" for keymap specific codes
 };
-
+void set_color(int from, int to, int r, int g, int b);
 void set_pressed_key(uint16_t key, bool is_pressed);
 void handle_pressed_key(void);
 void tap_hold_mod(uint16_t mod, uint16_t kc, bool is_pressed);
