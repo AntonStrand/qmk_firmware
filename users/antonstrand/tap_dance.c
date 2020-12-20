@@ -2,8 +2,11 @@
 
 uint8_t cur_dance(qk_tap_dance_state_t *state) {
     if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return SINGLE_TAP;
-        // Key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
+        // To make the switch to the hold state feel more responsive the
+        // check for interuption has been removed. This became an issue
+        // when you quickly wanted to switch from typing to using the arrow keys.
+        if (!state->pressed)
+            return SINGLE_TAP;
         else
             return SINGLE_HOLD;
     } else if (state->count == 2) {
