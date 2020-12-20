@@ -39,10 +39,14 @@ void flash_keyboard(void) {
     reset_keyboard();
 }
 
-void matrix_scan_user(void) {
-    // Repeat key presses while hold down
-    repeat_pressed_key();
+void set_color(int from, int to, int r, int g, int b) {
+    int i;
+    for (i = from; i <= to; i++) {
+        rgb_matrix_set_color(i, r, g, b);
+    }
 }
+
+void matrix_scan_user(void) { repeat_pressed_key(); }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -104,3 +108,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 };
+
+void suspend_power_down_kb(void) {
+    rgb_matrix_set_suspend_state(true);
+    suspend_power_down_user();
+}
+
+void suspend_wakeup_init_kb(void) {
+    rgb_matrix_set_suspend_state(false);
+    suspend_wakeup_init_user();
+}
