@@ -6,8 +6,9 @@
 #include "action.h"
 #include "version.h"
 #include "combos_config.h"
-#include "tap_dance.h"
-
+#ifdef TAP_DANCE_ENABLE
+#    include "tap_dance.h"
+#endif
 enum layers {
     _QWERTY,
     _LOWER,
@@ -35,11 +36,22 @@ enum layers {
 #define LALT_D LALT_T(KC_D)
 #define LGUI_F LGUI_T(KC_F)
 
+#define RC_ODIA RCTL_T(SE_ODIA)
+#define RS_L RSFT_T(KC_L)
+#define RA_K RALT_T(KC_K)
+#define RG_J RGUI_T(KC_J)
+
 #define SFT_QUOT RSFT_T(SE_QUOT)
 #define SLEEP G(A(KC_EJCT))
 #define TG_CMT G(SE_SLSH)
 
 #define TD_RAISE TD(RS_SPC_ENT)
+
+#define RAISE MO(_RAISE)
+#define LOWER MO(_LOWER)
+#define NUMBER MO(_NUMBER)
+#define RAPID MO(_RAPID)
+#define TG_NUM TG(_NUMBER)
 
 // Define all of
 enum custom_keycodes {
@@ -49,7 +61,6 @@ enum custom_keycodes {
     SKINNY_ARROW,
     FAT_ARROW,
     APP,
-    RAPID,
     R_LEFT,
     R_DOWN,
     R_UP,
@@ -60,6 +71,8 @@ enum custom_keycodes {
     GUI_QM,
     KEYMAP_RANGE  // use "KEYMAP_RANGE" for keymap specific codes
 };
+
+void repeat_pressed_key(void);
 void set_color(int from, int to, int r, int g, int b);
 void set_pressed_key(uint16_t key, bool is_pressed);
 void handle_pressed_key(void);

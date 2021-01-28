@@ -35,10 +35,16 @@ void compile_keyboard(void) {
  */
 void flash_keyboard(void) {
     clear_keyboard_mods();
+#ifdef USE_DFU
+    SEND_STRING("qmk flash -kb " QMK_KEYBOARD " -km " QMK_KEYMAP " -bl dfu" SS_TAP(X_ENTER));
+    reset_keyboard();
+#else
     SEND_STRING("qmk flash -kb " QMK_KEYBOARD " -km " QMK_KEYMAP SS_TAP(X_ENTER));
     reset_keyboard();
+#endif
 }
 
+#ifdef RGB_MATRIX_KEYPRESSES
 void set_color(int from, int to, int r, int g, int b) {
     int i;
     for (i = from; i <= to; i++) {
@@ -46,9 +52,30 @@ void set_color(int from, int to, int r, int g, int b) {
     }
 }
 
+void suspend_power_down_kb(void) {
+    rgb_matrix_set_suspend_state(true);
+    suspend_power_down_user();
+}
+
+void suspend_wakeup_init_kb(void) {
+    rgb_matrix_set_suspend_state(false);
+    suspend_wakeup_init_user();
+}
+#endif
+
 void matrix_scan_user(void) { repeat_pressed_key(); }
 
+#ifdef SSD1306OLED
+void set_keylog(uint16_t keycode, keyrecord_t *record);
+#endif
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+#ifdef SSD1306OLED
+        set_keylog(keycode, record);
+#endif
+    }
+
     switch (keycode) {
         case PIPE:
             if (record->event.pressed) {
@@ -108,13 +135,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 };
-
-void suspend_power_down_kb(void) {
-    rgb_matrix_set_suspend_state(true);
-    suspend_power_down_user();
-}
-
-void suspend_wakeup_init_kb(void) {
-    rgb_matrix_set_suspend_state(false);
-    suspend_wakeup_init_user();
-}
