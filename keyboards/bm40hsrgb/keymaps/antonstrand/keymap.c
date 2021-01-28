@@ -25,7 +25,6 @@
 #define RSE_SPC LT(_RAISE, KC_SPC)
 
 #define GUI_ESC LGUI_T(KC_ESC)
-#define TG_NUM TG(_NUMBER)
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -105,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // */
     [_ADJUST] = LAYOUT_planck_mit(
         _______, RESET,   DEBUG,   RGB_TOG, RGB_MOD, RGB_HUI,   RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI,    RGB_VAD,    KC_DEL ,
-        KC_CAPS, KC_WAKE, SLEEP,   _______, _______, TG(_GAME), _______, _______, KC_VOLD, KC_VOLU,    _______,    _______,
+        KC_CAPS, KC_WAKE, SLEEP,   _______, _______, TG(_GAME), _______, _______, KC_VOLD, KC_VOLU,    _______,    _______, 
         _______, _______, FLASH,   COMPILE, _______, _______,   _______, KC_MUTE, _______, TG(_CAMEL), TG(_SNAKE), _______,
         _______, _______, _______, _______, _______,       _______,      _______, _______,  _______,   _______,    CK_BASE
     ),
@@ -119,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * |      |  F9  |  F10 |  F11 |  F12 | Lock |  %   |   7  |   8  |   9  |   /  | Enter|
     * |------+------+------+------+------+------+------+------+------+------+------+------|
     * |      |      |      |      |      |             |   .  |   0  |   ,  |   *  |   =  |
-    * `-----------------------------------------------------------------------------------'
+    * `-------------------------------------------------------------------------v----------'
     */
     [_NUMBER] = LAYOUT_planck_mit(
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   SE_LPRN,  SE_RPRN,   KC_1,   KC_2, KC_3,    SE_PLUS, KC_BSPC,
