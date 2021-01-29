@@ -23,8 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keymap_swedish_mac.h"
 #include "rgblight_list.h"
 
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    // clang-format off
   [_QWERTY] = LAYOUT_split_3x6_3( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  SE_ARNG,\
@@ -49,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           KC_LGUI,   LOWER,  KC_SPC,    SE_QUES,   RAISE, KC_EXLM \
                                       //`--------------------------'  `--------------------------'
     ),
-  
+
   [_RAISE] = LAYOUT_split_3x6_3( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
     S(KC_TAB), _______, _______, _______, _______, _______,                      CK_REDO, CK_UNDO, CK_CUT, CK_COPY, CK_PASTE, KC_BSPC,\
@@ -80,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_CAPS, KC_WAKE,   SLEEP, _______, _______, _______,                      _______, _______, KC_VOLD, KC_VOLU, _______, _______,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, _______, FLASH,   COMPILE, _______, _______,                      _______, KC_MUTE, _______, _______, _______, _______,\
+      _______, _______,   FLASH, COMPILE, _______, _______,                      _______, KC_MUTE, _______, _______, _______, _______,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______ \
                                       //`--------------------------'  `--------------------------'
@@ -99,50 +99,120 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-}
+// clang-format on
+
+layer_state_t layer_state_set_user(layer_state_t state) { return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST); }
 
 void matrix_init_user(void) {
-    //SSD1306 OLED init, make sure to add #define SSD1306OLED in config.h
-    #ifdef SSD1306OLED
-        iota_gfx_init(!has_usb());   // turns on the display
-    #endif
+// SSD1306 OLED init, make sure to add #define SSD1306OLED in config.h
+#ifdef OLED_DRIVER_ENABLE
+    oled_init(!has_usb());  // turns on the display
+#endif
 }
 
-//SSD1306 OLED update loop, make sure to add #define SSD1306OLED in config.h
-#ifdef SSD1306OLED
+// SSD1306 OLED update loop, make sure to add #define SSD1306OLED in config.h
+#ifdef OLED_DRIVER_ENABLE
+static uint16_t oled_timer = 0;
+oled_rotation_t oled_init_user(oled_rotation_t rotation) { return OLED_ROTATION_270; }
+
+void render_qmk_logo(void) {
+    static const char PROGMEM font_logo[16] = {0x80, 0x81, 0x82, 0x83, 0x84, 0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0};
+    oled_write_P(font_logo, false);
+};
+
+void render_mod_status(void) {
+#    ifdef NO_ACTION_ONESHOT
+    uint8_t modifiers = get_mods();
+#    else
+    uint8_t modifiers = get_mods() | get_oneshot_mods();
+#    endif
+    oled_write_P(PSTR(">"), false);
+    (modifiers & MOD_MASK_CTRL) ? oled_write_P(PSTR("C"), false) : oled_write_P(PSTR("_"), false);
+    (modifiers & MOD_MASK_SHIFT) ? oled_write_P(PSTR("S"), false) : oled_write_P(PSTR("_"), false);
+    (modifiers & MOD_MASK_ALT) ? oled_write_P(PSTR("A"), false) : oled_write_P(PSTR("_"), false);
+    (modifiers & MOD_MASK_GUI) ? oled_write_P(PSTR("G"), false) : oled_write_P(PSTR("_"), false);
+}
 
 // When add source files to SRC in rules.mk, you can use functions.
 const char *read_layer_state(void);
-void set_keylog(uint16_t keycode, keyrecord_t *record);
-const char *read_keylog(void);
-const char *read_keylogs(void);
+void        set_keylog(uint16_t keycode, keyrecord_t *record);
+
+static void render_active_layer(void) {
+    oled_write_ln("", false);
+    switch (get_highest_layer(layer_state)) {
+        case _QWERTY:
+            oled_write_ln_P(PSTR("Qwert"), false);
+            break;
+        case _LOWER:
+            oled_write_ln_P(PSTR("Lower"), false);
+            break;
+        case _RAISE:
+            oled_write_ln_P(PSTR("Raise"), false);
+            break;
+        case _ADJUST:
+            oled_write_ln_P(PSTR("Setup"), false);
+            break;
+        case _NUMBER:
+            oled_write_ln_P(PSTR("Nums "), false);
+            break;
+        case _RAPID:
+            oled_write_ln_P(PSTR("Rapid"), false);
+            break;
+        default:
+            oled_write_P(PSTR("Undfd"), false);
+    }
+}
 
 void matrix_scan_kb(void) {
-   iota_gfx_task();
-   repeat_pressed_key();
+    oled_task();
+    repeat_pressed_key();
 }
 
-void matrix_render_user(struct CharacterMatrix *matrix) {
-  if (is_master) {
-    // If you want to change the display of OLED, you need to change here
-    matrix_write_ln(matrix, read_layer_state());
-    matrix_write_ln(matrix, read_keylogs());
-  }
+void render_led_state(void) {
+    // Host Keyboard LED Status
+    led_t led_state = host_keyboard_led_state();
+    oled_write_ln_P(led_state.num_lock ? PSTR("NUM") : PSTR(""), false);
+    oled_write_ln_P(led_state.caps_lock ? PSTR("CAPS") : PSTR(""), false);
+    oled_write_ln_P(led_state.scroll_lock ? PSTR("SCRL") : PSTR(""), false);
 }
 
-void matrix_update(struct CharacterMatrix *dest, const struct CharacterMatrix *source) {
-  if (memcmp(dest->display, source->display, sizeof(dest->display))) {
-    memcpy(dest->display, source->display, sizeof(dest->display));
-    dest->dirty = true;
-  }
+char wpm_str[11];
+void render_wpm(void) {
+    sprintf(wpm_str, "WPM:\n  %03d", get_current_wpm());
+    oled_write(wpm_str, false);
 }
 
-void iota_gfx_task_user(void) {
-  struct CharacterMatrix matrix;
-  matrix_clear(&matrix);
-  matrix_render_user(&matrix);
-  matrix_update(&display, &matrix);
+void write_empty_line(void) { oled_write_ln("", false); }
+
+void render_main(void) {
+    render_qmk_logo();
+    render_active_layer();
+    render_led_state();
+    write_empty_line();
+    oled_write_P(PSTR("Anton"), false);
+    write_empty_line();
+    render_wpm();
+    write_empty_line();
+    render_mod_status();
 }
-#endif//SSD1306OLED
+
+void oled_task_user(void) {
+    if (timer_elapsed(oled_timer) > 10000) {
+        oled_off();
+        return;
+    } else {
+        oled_on();
+    }
+    if (is_master) {
+        render_main();
+    }
+}
+
+bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        oled_timer = timer_read();
+    }
+    return process_record_user(keycode, record);
+}
+
+#endif  // SSD1306OLED
