@@ -51,17 +51,27 @@ void set_color(int from, int to, int r, int g, int b) {
         rgb_matrix_set_color(i, r, g, b);
     }
 }
+#endif
 
 void suspend_power_down_kb(void) {
+#ifdef RGB_MATRIX_KEYPRESSES
     rgb_matrix_set_suspend_state(true);
+#endif
+#ifdef OLED_DRIVER_ENABLE
+    oled_off();
+#endif
     suspend_power_down_user();
 }
 
 void suspend_wakeup_init_kb(void) {
+#ifdef RGB_MATRIX_KEYPRESSES
     rgb_matrix_set_suspend_state(false);
+#endif
+#ifdef OLED_DRIVER_ENABLE
+    oled_on();
+#endif
     suspend_wakeup_init_user();
 }
-#endif
 
 void matrix_scan_user(void) { repeat_pressed_key(); }
 
