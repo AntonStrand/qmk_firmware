@@ -1,10 +1,14 @@
+#include "quantum.h"
+#include "rgblight_list.h"
 #include "antonstrand.h"
 #include "keymap_swedish_mac.h"
 #include "sendstring_swedish_mac.h"
 #include "config.h"
 #include "space_cadet.c"
 #include "repeat_key_press.c"
-#include "oled.h"
+#ifdef OLED_DRIVER_ENABLE
+#    include "oled.h"
+#endif
 /**
  * Hold modifier until is_pressed is false. The key is tapped once when is_presses becomes true.
  */
@@ -44,17 +48,17 @@ void flash_keyboard(void) {
 #endif
 }
 
-#ifdef RGB_MATRIX_KEYPRESSES
 void set_color(int from, int to, int r, int g, int b) {
+#ifdef RGB_MATRIX_ENABLE
     int i;
     for (i = from; i <= to; i++) {
         rgb_matrix_set_color(i, r, g, b);
     }
-}
 #endif
+}
 
 void suspend_power_down_kb(void) {
-#ifdef RGB_MATRIX_KEYPRESSES
+#ifdef RGB_MATRIX_ENABLE
     rgb_matrix_set_suspend_state(true);
 #endif
 #ifdef OLED_DRIVER_ENABLE
@@ -64,7 +68,7 @@ void suspend_power_down_kb(void) {
 }
 
 void suspend_wakeup_init_kb(void) {
-#ifdef RGB_MATRIX_KEYPRESSES
+#ifdef RGB_MATRIX_ENABLE
     rgb_matrix_set_suspend_state(false);
 #endif
 #ifdef OLED_DRIVER_ENABLE

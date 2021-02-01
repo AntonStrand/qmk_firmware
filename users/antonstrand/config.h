@@ -3,7 +3,7 @@
 
 #include "combos_config.h"
 
-#define RGB_DISABLE_WHEN_USB_SUSPENDED true
+// #define RGB_DISABLE_WHEN_USB_SUSPENDED true
 
 #ifdef TAPPING_TERM
 #    undef TAPPING_TERM

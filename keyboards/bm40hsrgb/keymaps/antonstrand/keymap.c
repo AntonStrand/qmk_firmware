@@ -20,14 +20,14 @@
 #include "keymap_swedish_mac.h"
 #include "rgblight_list.h"
 
-
 #define LWR_BSP LT(_LOWER, KC_BSPC)
 #define RSE_SPC LT(_RAISE, KC_SPC)
 
 #define GUI_ESC LGUI_T(KC_ESC)
 
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    // clang-format off
+
     /* Qwerty
      * ,-----------------------------------------------------------------------------------.
      * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |   Å  |
@@ -59,10 +59,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
 
     [_LOWER] = LAYOUT_planck_mit(
-          SE_TILD, SE_DQUO, SE_QUOT, SE_PIPE,      SE_AMPR, KC_EQL,    SE_DLR,  SE_LCBR, SE_LPRN, SE_RPRN, SE_RCBR, SE_CIRC,
-          ______,  SE_AT,   COMPOSE, SKINNY_ARROW, PIPE,    FAT_ARROW, SE_HASH, SE_LBRC, SE_RBRC, SE_SCLN, SE_COLN, SE_GRV,
-          KC_LSFT, SE_PLUS, SE_MINS, SE_ASTR,      SE_SLSH, SE_EQL,    SE_PERC, SE_BSLS, SE_LABK, SE_RABK, SE_UNDS, SE_QUOT,
-          ______,  ______,  ______,  ______,       ______,        ______,       ______,  ______,  ______,  ______,  KC_EXLM
+        SE_TILD, SE_DQUO, SE_QUOT, SE_PIPE,      SE_AMPR, KC_EQL,    SE_DLR,  SE_LCBR, SE_LPRN, SE_RPRN, SE_RCBR, SE_CIRC,
+        ______,  SE_AT,   COMPOSE, SKINNY_ARROW, PIPE,    FAT_ARROW, SE_HASH, SE_LBRC, SE_RBRC, SE_SCLN, SE_COLN, SE_GRV,
+        KC_LSFT, SE_PLUS, SE_MINS, SE_ASTR,      SE_SLSH, SE_EQL,    SE_PERC, SE_BSLS, SE_LABK, SE_RABK, SE_UNDS, SE_QUOT,
+        ______,  ______,  ______,  ______,       ______,        ______,       ______,  ______,  ______,  ______,  KC_EXLM
     ),
 
     // /* Raise (Nav)
@@ -104,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // */
     [_ADJUST] = LAYOUT_planck_mit(
         _______, RESET,   DEBUG,   RGB_TOG, RGB_MOD, RGB_HUI,   RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI,    RGB_VAD,    KC_DEL ,
-        KC_CAPS, KC_WAKE, SLEEP,   _______, _______, TG(_GAME), _______, _______, KC_VOLD, KC_VOLU,    _______,    _______, 
+        KC_CAPS, KC_WAKE, SLEEP,   _______, _______, TG(_GAME), _______, _______, KC_VOLD, KC_VOLU,    _______,    _______,
         _______, _______, FLASH,   COMPILE, _______, _______,   _______, KC_MUTE, _______, TG(_CAMEL), TG(_SNAKE), _______,
         _______, _______, _______, _______, _______,       _______,      _______, _______,  _______,   _______,    CK_BASE
     ),
@@ -179,29 +179,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+// clang-format on
 
-void rgb_matrix_indicators_user (void) {
+#ifdef RGB_MATRIX_ENABLE
+void rgb_matrix_indicators_user(void) {
     switch (get_highest_layer(layer_state)) {
         case _RAISE:
             set_color(19, 22, RGB_TEAL);
             rgb_matrix_set_color(42, RGB_TEAL);
             break;
         case _LOWER:
-            rgb_matrix_set_color(40, 0xFF,  0x00, 0x00);
+            rgb_matrix_set_color(40, 0xFF, 0x00, 0x00);
             break;
         case _NUMBER:
             set_color(7, 9, RGB_AZURE);
             set_color(19, 21, RGB_AZURE);
             set_color(31, 33, RGB_AZURE);
             rgb_matrix_set_color(43, RGB_AZURE);
-            rgb_matrix_set_color (36  , 0x00,  0xFF, 0x00);
+            rgb_matrix_set_color(36, 0x00, 0xFF, 0x00);
             break;
         case _ADJUST:
-            rgb_matrix_set_color_all (0x7A,  0x00, 0xFF);
+            rgb_matrix_set_color_all(0x7A, 0x00, 0xFF);
             break;
     }
 }
+#endif
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-}
+layer_state_t layer_state_set_user(layer_state_t state) { return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST); }
