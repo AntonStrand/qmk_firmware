@@ -4,7 +4,7 @@
 #include "config.h"
 #include "space_cadet.c"
 #include "repeat_key_press.c"
-
+#include "oled.h"
 /**
  * Hold modifier until is_pressed is false. The key is tapped once when is_presses becomes true.
  */
@@ -75,16 +75,12 @@ void suspend_wakeup_init_kb(void) {
 
 void matrix_scan_user(void) { repeat_pressed_key(); }
 
-#ifdef SSD1306OLED
-void set_keylog(uint16_t keycode, keyrecord_t *record);
-#endif
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+#ifdef OLED_DRIVER_ENABLE
     if (record->event.pressed) {
-#ifdef SSD1306OLED
-        set_keylog(keycode, record);
-#endif
+        process_record_user_oled(keycode, record);
     }
+#endif
 
     switch (keycode) {
         case PIPE:
