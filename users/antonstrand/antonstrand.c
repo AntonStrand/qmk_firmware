@@ -31,7 +31,7 @@ void clear_keyboard_mods(void) {
  */
 void compile_keyboard(void) {
     clear_keyboard_mods();
-    SEND_STRING("qmk compile -kb " QMK_KEYBOARD " -km " QMK_KEYMAP SS_TAP(X_ENTER));
+    send_string("qmk compile -kb " QMK_KEYBOARD " -km " QMK_KEYMAP SS_TAP(X_ENTER));
 }
 
 /**
@@ -39,7 +39,7 @@ void compile_keyboard(void) {
  */
 void flash_keyboard(void) {
     clear_keyboard_mods();
-    SEND_STRING("qmk flash -kb " QMK_KEYBOARD " -km " QMK_KEYMAP SS_TAP(X_ENTER));
+    send_string("qmk flash -kb " QMK_KEYBOARD " -km " QMK_KEYMAP SS_TAP(X_ENTER));
     reset_keyboard();
 }
 
@@ -84,22 +84,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case PIPE:
             if (record->event.pressed) {
-                SEND_STRING("|>");
+                send_string("|>");
             }
             break;
         case COMPOSE:
             if (record->event.pressed) {
-                SEND_STRING(">>");
+                send_string(">>");
             }
             break;
         case SKINNY_ARROW:
             if (record->event.pressed) {
-                SEND_STRING("->");
+                send_string("->");
             }
             break;
         case FAT_ARROW:
             if (record->event.pressed) {
-                SEND_STRING("=>");
+                send_string("=>");
             }
             break;
         case APP:

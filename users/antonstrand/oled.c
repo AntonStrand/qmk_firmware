@@ -52,11 +52,6 @@ void render_active_layer(void) {
     }
 }
 
-void matrix_scan_kb(void) {
-    oled_task();
-    repeat_pressed_key();
-}
-
 void render_led_state(void) {
     // Host Keyboard LED Status
     led_t led_state = host_keyboard_led_state();
