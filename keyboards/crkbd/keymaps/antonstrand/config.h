@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define USE_DFU
 
-#define OLED_FONT_H "keyboards/crkbd/keymaps/antonstrand/glcdfont.c"
+#define OLED_FONT_H "users/antonstrand/glcdfont.c"
 
 #ifdef RGBLIGHT_ENABLE
 #    undef RGBLED_NUM
