@@ -39,13 +39,8 @@ void compile_keyboard(void) {
  */
 void flash_keyboard(void) {
     clear_keyboard_mods();
-#ifdef USE_DFU
-    SEND_STRING("qmk flash -kb " QMK_KEYBOARD " -km " QMK_KEYMAP " -bl dfu" SS_TAP(X_ENTER));
-    reset_keyboard();
-#else
     SEND_STRING("qmk flash -kb " QMK_KEYBOARD " -km " QMK_KEYMAP SS_TAP(X_ENTER));
     reset_keyboard();
-#endif
 }
 
 void set_color(int from, int to, int r, int g, int b) {
