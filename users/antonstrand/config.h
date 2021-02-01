@@ -8,9 +8,11 @@
 #ifdef TAPPING_TERM
 #    undef TAPPING_TERM
 #endif
+
 #ifdef OLED_DRIVER_ENABLED
 #    define OLED_FONT_H "users/antonstrand/glcdfont.c"
 #endif
+
 #define TAPPING_TERM 200
 
 // this makes it possible to do rolling combos (zx) with keys that

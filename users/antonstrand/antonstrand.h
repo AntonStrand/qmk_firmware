@@ -1,7 +1,7 @@
 
 #pragma once
-#include QMK_KEYBOARD_H
 
+#include QMK_KEYBOARD_H
 #include "quantum.h"
 #include "action.h"
 #include "version.h"
@@ -9,6 +9,7 @@
 #ifdef TAP_DANCE_ENABLE
 #    include "tap_dance.h"
 #endif
+
 enum layers {
     _QWERTY,
     _LOWER,
