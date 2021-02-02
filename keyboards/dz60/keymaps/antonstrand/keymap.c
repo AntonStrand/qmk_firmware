@@ -2,29 +2,16 @@
 #include "quantum.h"
 #include "version.h"
 #include "keymap_swedish.h"
-#include "sendstring_swedish.h"
 #include "antonstrand.h"
-#define ______ KC_TRNS
 
-/** Custom Keys */
-enum custom_keycodes_keymap { NEXT_APP_WIN = LGUI(LSFT(KC_EQL)), CK_CUT = LGUI(KC_X), CK_COPY = LGUI(KC_C), CK_PASTE = LGUI(KC_V), CK_UNDO = LGUI(KC_Z), CK_FIND = LGUI(KC_F), CK_LCBR = LSFT(LALT(SE_8)), CK_RCBR = LSFT(LALT(SE_9)), SELECT_WORD = NEW_SAFE_RANGE, SEND_VERSION, SEND_MAKE };
-
-/** LAYERS */
+// /** LAYERS */
 #define BASE 0
 #define ARROW 1
-#define RAPID 2
+#define _RAPID 2
 #define MOUSE 3
 #define SYMBOL 4
 #define GAME 5
 #define RGB 6
-
-// #define NO_KEY_PRESS (UINT16_MAX - 1)
-
-// static uint16_t pressed_key = NO_KEY_PRESS;
-
-enum { TD_RCBR = 0, TD_RBRC = 1 };
-
-qk_tap_dance_action_t tap_dance_actions[] = {[TD_RCBR] = ACTION_TAP_DANCE_DOUBLE(CK_LCBR, CK_RCBR), [TD_RBRC] = ACTION_TAP_DANCE_DOUBLE(SE_LBRC, SE_RBRC)};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -46,7 +33,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS,
 
-               OSL(SYMBOL), MT(MOD_LCTL, KC_A), MT(MOD_LSFT, KC_S), MT(MOD_LALT, KC_D), MT(MOD_LGUI, KC_F), KC_G, KC_H, MT(MOD_LGUI, KC_J), KC_K, KC_L, SE_ODIA, SE_ADIA, KC_ENT,
+               OSL(SYMBOL), LCTL_A, LSFT_S, LALT_D, LGUI_F, KC_G, KC_H, RG_J, RA_K, RS_L, RC_ODIA, SE_ADIA, KC_ENT,
 
                OSM(MOD_LSFT), ______, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, KC_UP, KC_DEL,
 
@@ -68,11 +55,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     LAYOUT_all(______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, KC_DEL,
 
-               ______, ______, SELECT_WORD, KC_ENT, KC_DEL, CK_FIND, ______, CK_UNDO, CK_CUT, CK_COPY, CK_PASTE, ______, ______, ______,
+               ______, ______, ______, KC_ENT, KC_DEL, ______, ______, CK_UNDO, CK_CUT, CK_COPY, CK_PASTE, ______, ______, ______,
 
                ______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, APP, ______, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, ______, ______,
 
-               ______, ______, CK_UNDO, CK_CUT, CK_COPY, MO(RAPID), NEXT_APP_WIN, KC_ESC, KC_ENT, ______, ______, ______, ______, KC_VOLU, KC_MUTE,
+               ______, ______, CK_UNDO, CK_CUT, CK_COPY, MO(_RAPID), ______, KC_ESC, KC_ENT, ______, ______, ______, ______, KC_VOLU, KC_MUTE,
 
                ______, ______, ______, KC_DEL, ______, ______, ______, ______, KC_BRID, KC_VOLD, KC_BRIU),
 
@@ -96,9 +83,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                ______, ______, ______, ______, ______, ______, ______, R_LEFT, R_DOWN, R_UP, R_RIGHT, ______, ______,
 
-               ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
+               ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
-               ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ),
+               ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______),
 
     /* Mouse Layer
      * ,-----------------------------------------------------------------------------------------.
@@ -118,9 +105,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                ______, ______, KC_ACL0, KC_ACL1, KC_ACL2, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, KC_BTN2, KC_BTN1, ______, ______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, ______, ______,
 
-               ______, ______, ______, ______, ______, ______, ______, ______, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R, ______, ______,
+               ______, ______, ______, ______, ______, ______, ______, ______, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R, ______, ______, ______,
 
-               ______, ______, ______, ______, ______, KC_TAB, ______, ______, ______, ______, ______, ),
+               ______, ______, ______, ______, ______, KC_TAB, ______, ______, ______, ______, ______),
 
     /* Symbol Layer
      * ,-----------------------------------------------------------------------------------------.
@@ -150,7 +137,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     LAYOUT_all(______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
-               ______, SE_DQUO, SE_QUOT, A(KC_7), SE_AMPR, KC_EQL, A(SE_4), CK_LCBR, SE_LPRN, SE_RPRN, CK_RCBR, KC_RCBR, ______, SE_TILD,
+               ______, SE_DQUO, SE_QUOT, A(KC_7), SE_AMPR, KC_EQL, A(SE_4), SE_LCBR, SE_LPRN, SE_RPRN, SE_RCBR, SE_EQL, ______, SE_TILD,
 
                ______, SE_AT, COMPOSE, SKINNY_ARROW, PIPE, FAT_ARROW, SE_HASH, SE_LBRC, SE_RBRC, S(KC_COMM), S(KC_DOT), S(KC_EQL), ______,
 
@@ -208,9 +195,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     LAYOUT_all(______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______, ______,
 
-               ______, KC_F1, KC_F2, KC_F3, KC_F4, ______, ______, ______, ______, ______, ______, SEND_VERSION, CK_FLASH, ______,
+               ______, KC_F1, KC_F2, KC_F3, KC_F4, ______, ______, ______, ______, ______, ______, ______, FLASH, ______,
 
-               ______, KC_F5, KC_F6, KC_F7, KC_F8, ______, ______, ______, ______, ______, ______, ______, KC_SLEP,
+               ______, KC_F5, KC_F6, KC_F7, KC_F8, ______, ______, ______, ______, ______, ______, ______, SLEEP,
 
                ______, ______, KC_F9, KC_F10, KC_F11, KC_F12, ______, ______, ______, ______, TG(GAME), ______, ______, ______, RESET,
 
@@ -218,60 +205,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-void matrix_init_user(void) {
-    rgblight_enable();
-    combo_enable();
-}
-
-void mod_type(uint16_t modcode, uint16_t keycode) {
-    register_code16(modcode);
-    tap_code16(keycode);
-    unregister_code16(modcode);
-}
-
-void select_word(void) {
-    register_code16(KC_LALT);
-    tap_code16(KC_RIGHT);
-    tap_code16(KC_LEFT);
-    register_code16(KC_LSFT);
-    tap_code16(KC_RIGHT);
-    unregister_code16(KC_LALT);
-    unregister_code16(KC_LSFT);
-}
-
-void repeat_tap(uint16_t times, uint16_t keycode) {
-    int i;
-    for (i = 0; i < times; i++) {
-        tap_code16(keycode);
-    }
-}
-
-// void set_pressed_key(uint16_t key, bool is_pressed) {
-//     if (is_pressed) {
-//         pressed_key = key;
-//     } else {
-//         pressed_key = NO_KEY_PRESS;
-//     }
-// }
-
-void matrix_scan_user(void) {
-    // Repeat key presses while hold down
-    handle_pressed_key();
-    // switch (pressed_key) {
-    //     case R_LEFT:
-    //         tap_code16(KC_LEFT);
-    //         break;
-    //     case CK_RAPID_UP:
-    //         tap_code16(KC_UP);
-    //         break;
-    //     case CK_RAPID_RIGHT:
-    //         tap_code16(KC_RIGHT);
-    //         break;
-    //     case CK_RD:
-    //         tap_code16(KC_DOWN);
-    //         break;
-    // }
-
+void matrix_scan_keymap(void) {
 #ifdef RGBLIGHT_ENABLE
     static uint8_t old_layer = 255;
     uint8_t        new_layer = biton32(layer_state);
@@ -301,73 +235,3 @@ void matrix_scan_user(void) {
 
 #endif  // RGBLIGHT_ENABLE
 }
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case PIPE:
-            if (record->event.pressed) {
-                // |>
-                tap_code16(A(KC_7));
-                tap_code16(S(KC_GRV));
-            }
-            break;
-        case COMPOSE:
-            if (record->event.pressed) {
-                // >>
-                tap_code16(S(KC_GRV));
-                tap_code16(S(KC_GRV));
-            }
-            break;
-        case SKINNY_ARROW:
-            if (record->event.pressed) {
-                // ->
-                SEND_STRING("-");
-                tap_code16(S(KC_GRV));
-            }
-            break;
-        case FAT_ARROW:
-            if (record->event.pressed) {
-                // =>
-                tap_code16(S(KC_0));
-                tap_code16(S(KC_GRV));
-            }
-            break;
-        case APP:
-            if (record->event.pressed) {
-                register_code16(KC_LCMD);
-                tap_code16(KC_TAB);
-            } else {
-                unregister_code16(KC_LCMD);
-            }
-            break;
-        case SELECT_WORD:
-            if (record->event.pressed) {
-                select_word();
-            }
-            break;
-        case R_LEFT:
-            set_pressed_key(R_LEFT, record->event.pressed);
-            break;
-        case CK_RAPID_UP:
-            set_pressed_key(CK_RAPID_UP, record->event.pressed);
-            break;
-        case CK_RAPID_RIGHT:
-            set_pressed_key(CK_RAPID_RIGHT, record->event.pressed);
-            break;
-        case CK_RD:
-            set_pressed_key(CK_RD, record->event.pressed);
-            break;
-        case SEND_VERSION:
-            if (record->event.pressed) {
-                SEND_STRING(QMK_KEYBOARD "/" QMK_KEYMAP "@" QMK_VERSION " (" QMK_BUILDDATE ")");
-            }
-            break;
-        case CK_FLASH:
-            if (record->event.pressed) {
-                flash_keyboard();
-            }
-            break;
-    }
-
-    return true;
-};

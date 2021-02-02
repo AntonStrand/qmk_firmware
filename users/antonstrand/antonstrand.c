@@ -72,7 +72,25 @@ void suspend_wakeup_init_kb(void) {
     suspend_wakeup_init_user();
 }
 
-void matrix_scan_user(void) { repeat_pressed_key(); }
+__attribute__((weak)) void matrix_init_keymap(void) {}
+
+void matrix_init_user(void) {
+#ifdef RGBLIGHT_ENABLE
+    rgblight_enable();
+#endif
+#ifdef COMBO_ENABLE
+    combo_enable();
+#endif
+    matrix_init_keymap();
+}
+
+// To be able to use it in a keymap
+__attribute__((weak)) void matrix_scan_keymap(void) {}
+
+void matrix_scan_user(void) {
+    repeat_pressed_key();
+    matrix_scan_keymap();
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef OLED_DRIVER_ENABLE
