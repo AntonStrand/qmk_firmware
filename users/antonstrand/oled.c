@@ -115,7 +115,7 @@ void render_main(void) {
 }
 
 void oled_task_user(void) {
-    if (timer_elapsed(oled_timer) > 10000) {
+    if (timer_elapsed(oled_timer) > 30000) {
         oled_off();
         return;
     } else {
