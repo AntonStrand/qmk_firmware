@@ -145,6 +145,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 flash_keyboard();
             }
             break;
+        case MAKE_ALL:
+            if (record->event.pressed) {
+                send_string("qmk compile -kb all -km antonstrand" SS_TAP(X_ENTER));
+            }
+            break;
         case CK_BASE:
             if (record->event.pressed) {
                 layer_move(_QWERTY);

@@ -68,6 +68,7 @@ enum custom_keycodes {
     R_RIGHT,
     COMPILE,
     FLASH,
+    MAKE_ALL,
     CK_BASE,
     GUI_QM,
     KEYMAP_RANGE  // use "KEYMAP_RANGE" for keymap specific codes
