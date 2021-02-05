@@ -6,7 +6,9 @@
 #include "config.h"
 #include "space_cadet.c"
 #include "repeat_key_press.c"
-#include "git_command.c"
+#ifdef GIT_COMMANDS
+#    include "git_command.c"
+#endif
 #ifdef OLED_DRIVER_ENABLE
 #    include "oled.h"
 #endif
@@ -160,7 +162,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case GUI_QM:
             gui_qm(record->event.pressed);
             break;
-
+#ifdef GIT_COMMANDS
         case GH_PR:
             if (record->event.pressed) {
                 open_new_github_pr();
@@ -184,6 +186,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 open_in_github();
             }
             break;
+#endif
     }
 
     return true;
