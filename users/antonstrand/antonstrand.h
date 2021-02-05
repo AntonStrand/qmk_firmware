@@ -48,6 +48,7 @@ enum layers {
 
 #define TD_RAISE TD(RS_SPC_ENT)
 
+#define RSE_ENT LT(_RAISE, KC_ENT)
 #define RAISE MO(_RAISE)
 #define LOWER MO(_LOWER)
 #define NUMBER MO(_NUMBER)
@@ -71,6 +72,10 @@ enum custom_keycodes {
     MAKE_ALL,
     CK_BASE,
     GUI_QM,
+    GH_PR,
+    GH_PBRN,
+    GH_OBRN,
+    GH_OPEN,
     KEYMAP_RANGE  // use "KEYMAP_RANGE" for keymap specific codes
 };
 

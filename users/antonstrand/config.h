@@ -18,4 +18,7 @@
 #define IGNORE_MOD_TAP_INTERRUPT
 #undef PERMISSIVE_HOLD
 
+// A side effect by lowering this number is that macros/send_string are typed faster
+#define USB_POLLING_INTERVAL_MS 5
+
 #endif
