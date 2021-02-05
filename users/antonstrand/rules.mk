@@ -11,3 +11,7 @@ endif
 ifeq ($(strip $(OLED_DRIVER_ENABLE)), yes)
   SRC += oled.c
 endif
+
+ifeq ($(strip $(GIT_COMMANDS)), yes)
+  SRC += git_command.c
+endif

@@ -1,6 +1,6 @@
 #include "quantum.h"
 #include "antonstrand.h"
-#include "sendstring_swedish_mac.h"
+#include "git_command.h"
 
 // Open both `git` and `https` projects in github.
 // \ is alt + shift + 7 on a swedish mac keymap. A combination sendstring doesn't seem to support. That's the reason behind SS_LSFT("|").
